@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { query, mutation, action } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
 
 
@@ -12,7 +12,7 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 
 // You can read data from the database via a query:
 export const user = query({
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     //// Read the database as many times as you need here.
     //// See https://docs.convex.dev/database/reading-data.
     const userId = await getAuthUserId(ctx);
