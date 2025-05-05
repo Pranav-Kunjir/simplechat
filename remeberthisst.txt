@@ -1,0 +1,3 @@
+<div className="flex flex-col gap-8 max-w-lg mx-auto">
+      <p>Welcome {viewer ?? "Anonymous"}!</p>
+    </div>
