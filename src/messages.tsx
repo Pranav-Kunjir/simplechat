@@ -2,13 +2,13 @@
 
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import 'bootstrap/dist/css/bootstrap.css';
 import "./index.css"
-import { setDefaultAutoSelectFamily } from "net";
+
 
 
 function formatTimestamp(timestamp: number): string {
@@ -21,9 +21,9 @@ function formatTimestamp(timestamp: number): string {
     const twelveHour = hours % 12 || 12; // Convert 0-23 to 12,1-11
 
     // Date components
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
-    const year = date.getFullYear();
+    // const day = date.getDate().toString().padStart(2, '0');
+    // const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+    // const year = date.getFullYear();
     return `${twelveHour}:${minutes} ${ampm} `;
 }
 

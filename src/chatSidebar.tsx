@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  Authenticated,
-  Unauthenticated,
   useConvexAuth,
 } from "convex/react";
 import { useMutation, useQuery } from "convex/react";
@@ -13,11 +11,9 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.css';
 import "./index.css"
-import { eventNames } from "process";
-import { user } from "../convex/myFunctions";
 import { UserMessages } from "./messages";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { FiMail, FiSearch, FiUser } from 'react-icons/fi';
+import { FiMail, FiSearch, } from 'react-icons/fi';
 
 
 
@@ -29,7 +25,6 @@ export function ChatSidebar() {
   const [email, setEmail] = useState("");
   const [currChat, setCurrChat] = useState("");
   const [searchEmail, setSearchEmail] = useState<string | null>(null);
-  const [selected, setSelected] = useState(false);
   currChat;
   // Proper query skipping with null arguments
   const userExists = useQuery(
@@ -145,7 +140,6 @@ export function ChatSidebar() {
         <div  key={chat?._id} data-chat-id={chat?._id}   className="chats"   onClick={(e) => {
           // Extract _id from dataset
           const chatId = e.currentTarget.dataset.chatId;
-          setSelected(true)
           setCurrChat(chatId ?? "")
         }} style={{ 
           backgroundColor: currChat === chat?._id ? '#515151' : '#2c2c2c',

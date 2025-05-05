@@ -3,16 +3,10 @@
 import {
   Authenticated,
   Unauthenticated,
-  useConvexAuth,
-  useMutation,
-  useQuery,
 } from "convex/react";
-import { api } from "../convex/_generated/api";
-import { useAuthActions } from "@convex-dev/auth/react";
 // import { useState } from "react";
 import { SignIn } from "./signin";
 import {ChatSidebar} from "./chatSidebar";
-import { UserMessages } from "./messages";
 import "./index.css"
 
 
