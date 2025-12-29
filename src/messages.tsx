@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
-import { useState} from "react";
+import { useState, useRef, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -13,7 +13,7 @@ import "./index.css"
 
 function formatTimestamp(timestamp: number): string {
     const date = new Date(timestamp);
-    
+
     // Time components
     const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -28,11 +28,22 @@ function formatTimestamp(timestamp: number): string {
 }
 
 
-export function UserMessages({ chatId }: { chatId: string }) {
+import { FiArrowLeft } from 'react-icons/fi';
+
+export function UserMessages({ chatId, onBack, recipientName }: { chatId: string, onBack: () => void, recipientName: string }) {
     const { viewer } = useQuery(api.myFunctions.user, {}) ?? {};
     const msgs = useQuery(api.myFunctions.getMessages, { chatId: chatId });
     const sendMessage = useMutation(api.myFunctions.writeMessages);
     const [message, setMessage] = useState("");
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [msgs]);
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -46,30 +57,40 @@ export function UserMessages({ chatId }: { chatId: string }) {
             setMessage(""); // Clear the input field
         }
     };
+
+
+
     return (
         <>
+            <div className="chat-header mobile-visible">
+                <Button variant="link" className="back-btn text-white p-0 me-3" onClick={onBack}>
+                    <FiArrowLeft size={24} />
+                </Button>
+                <h5 className="m-0 text-white">{recipientName}</h5>
+            </div>
             <div className="messages-container">
                 {msgs?.map((individualMsg) => (
-                    <div key={individualMsg._id} className="user-chats"  
-                    style={{ 
-                        backgroundColor: individualMsg.senderId === viewer ? '#005c4b' : '#363636',
-                      }}>
+                    <div
+                        key={individualMsg._id}
+                        className={`message-bubble ${individualMsg.senderId === viewer ? 'message-sent' : 'message-received'}`}
+                    >
                         <h5 className="user-msg">{individualMsg.text}</h5>
-                        <p>{formatTimestamp(individualMsg.createdAt)}</p>
+                        <p className="message-time">{formatTimestamp(individualMsg.createdAt)}</p>
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
             </div>
             <Form onSubmit={handleSubmit}>
-                <InputGroup className="mb-3">
+                <InputGroup className="mb-0 chat-input-group">
                     <Form.Control
                         value={message} // Make it a controlled input
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Type your message"
                         aria-label="Message input"
                     />
-                    <Button 
-                        variant="outline-secondary" 
-                        type="submit" 
+                    <Button
+                        variant="outline-secondary"
+                        type="submit"
                         id="button-addon2"
                     >
                         Send
